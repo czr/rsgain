@@ -65,6 +65,7 @@ class ScanJob {
 			std::filesystem::path path;
 			FileType type;
 			std::unique_ptr<ebur128_state, decltype(&free_ebur128)> ebur128;
+			std::unique_ptr<ebur128_state, decltype(&free_ebur128)> ebur128_midrange;
 			std::unique_ptr<std::filesystem::file_time_type> mtime;
 			std::string container;
 			ScanResult result;
@@ -72,7 +73,7 @@ class ScanJob {
 			bool tclip = false;
 			bool aclip = false;
 
-			Track(const std::filesystem::path &path, FileType type) : path(path), type(type), ebur128(nullptr, free_ebur128) {};
+			Track(const std::filesystem::path &path, FileType type) : path(path), type(type), ebur128(nullptr, free_ebur128), ebur128_midrange(nullptr, free_ebur128) {};
 			ScanReturn scan(const Config &config, std::mutex *ffmpeg_mutex);
 			void calculate_loudness(const Config &config);
 		};

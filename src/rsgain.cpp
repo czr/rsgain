@@ -159,6 +159,30 @@ bool parse_max_peak_level(const char *value, double &peak)
     return true;
 }
 
+bool parse_midrange_freq(const char *value, double &freq)
+{
+    char *rest = nullptr;
+    double f = strtod(value, &rest);
+    if (rest == value || !std::isfinite(f) || f <= 0.0) {
+        output_error("Invalid midrange frequency '{}'", value);
+        return false;
+    }
+    freq = f;
+    return true;
+}
+
+bool parse_midrange_blend(const char *value, double &blend)
+{
+    char *rest = nullptr;
+    double b = strtod(value, &rest);
+    if (rest == value || !std::isfinite(b) || b < 0.0 || b > 1.0) {
+        output_error("Invalid midrange blend '{}' (must be 0.0 to 1.0)", value);
+        return false;
+    }
+    blend = b;
+    return true;
+}
+
 std::pair<bool, bool> parse_output_mode(const std::string_view arg)
 {
     std::pair<bool, bool> ret(false, false);
@@ -182,7 +206,8 @@ static void custom_mode(int argc, char *argv[])
     unsigned int nb_files   = 0;
     opterr = 0;
 
-    const char *short_opts = "+aec:m:tdl:O::qps:LSI:o:h?";
+    enum { OPT_MIDRANGE_LOW = 256, OPT_MIDRANGE_HIGH, OPT_MIDRANGE_BLEND };
+    const char *short_opts = "+aec:m:tdl:O::qps:LSI:o:Mh?";
     static struct option long_opts[] = {
         { "album",           no_argument,       nullptr, 'a' },
         { "album-aes77",     no_argument,       nullptr, 'e' },
@@ -203,6 +228,12 @@ static void custom_mode(int argc, char *argv[])
         { "lowercase",       no_argument,       nullptr, 'L' },
         { "id3v2-version",   required_argument, nullptr, 'I' },
         { "opus-mode",       required_argument, nullptr, 'o' },
+
+        { "midrange-filter", no_argument,       nullptr, 'M' },
+        { "midrange-low",    required_argument, nullptr, OPT_MIDRANGE_LOW },
+        { "midrange-high",   required_argument, nullptr, OPT_MIDRANGE_HIGH },
+        { "midrange-blend",  required_argument, nullptr, OPT_MIDRANGE_BLEND },
+
         { "help",            no_argument,       nullptr, 'h' },
         { 0, 0, 0, 0 }
     };
@@ -224,7 +255,11 @@ static void custom_mode(int argc, char *argv[])
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     };
 
     while ((rc = getopt_long(argc, argv, short_opts, long_opts, &i)) != -1) {
@@ -306,7 +341,26 @@ static void custom_mode(int argc, char *argv[])
                 if (!parse_opus_mode(optarg, config.opus_mode))
                     quit(EXIT_FAILURE);
                 break;
-                
+
+            case 'M':
+                config.midrange_filter = true;
+                break;
+
+            case OPT_MIDRANGE_LOW:
+                if (!parse_midrange_freq(optarg, config.midrange_low))
+                    quit(EXIT_FAILURE);
+                break;
+
+            case OPT_MIDRANGE_HIGH:
+                if (!parse_midrange_freq(optarg, config.midrange_high))
+                    quit(EXIT_FAILURE);
+                break;
+
+            case OPT_MIDRANGE_BLEND:
+                if (!parse_midrange_blend(optarg, config.midrange_blend))
+                    quit(EXIT_FAILURE);
+                break;
+
             case 'h':
                 help_custom();
                 quit(EXIT_SUCCESS);
@@ -319,6 +373,11 @@ static void custom_mode(int argc, char *argv[])
                     output_fail("Unrecognized option '{}'", argv[optind - 1] + 2);
                 quit(EXIT_FAILURE);
         }
+    }
+
+    if (config.midrange_filter && config.midrange_low >= config.midrange_high) {
+        output_fail("Midrange low frequency ({:.0f}) must be less than high frequency ({:.0f})", config.midrange_low, config.midrange_high);
+        quit(EXIT_FAILURE);
     }
 
     nb_files = (unsigned int) (argc - optind);
@@ -477,6 +536,13 @@ static inline void help_custom() {
     CMD_HELP("--opus-mode=s", "-o s", "Same as 'r', plus override target loudness to -23 LUFS");
     CMD_HELP("--opus-mode=t", "-o t", "Write track gain to header output gain");
     CMD_HELP("--opus-mode=a", "-o a", "Write album gain to header output gain");
+
+    rsgain::print("\n");
+
+    CMD_HELP("--midrange-filter", "-M", "Enable midrange-focused loudness normalization");
+    CMD_HELP("--midrange-low=n", "",   "Set low cutoff for midrange filter in Hz (default: 250)");
+    CMD_HELP("--midrange-high=n", "",  "Set high cutoff for midrange filter in Hz (default: 4000)");
+    CMD_HELP("--midrange-blend=n", "", "Blend between midrange and full-spectrum (0.0-1.0, default: 0.5)");
 
     rsgain::print("\n");
 

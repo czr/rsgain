@@ -16,6 +16,10 @@
 #define RG_TARGET_LOUDNESS -18.0
 #define ID3V2_KEEP 0
 
+#define DEFAULT_MIDRANGE_LOW 250.0
+#define DEFAULT_MIDRANGE_HIGH 4000.0
+#define DEFAULT_MIDRANGE_BLEND 0.5
+
 enum class OutputType{
 	NONE,
 	STDOUT,
@@ -40,6 +44,10 @@ struct Config {
 	bool skip_mp4;
 	bool preserve_mtimes;
 	bool dual_mono;
+	bool midrange_filter;
+	double midrange_low;
+	double midrange_high;
+	double midrange_blend;
 };
 
 
@@ -52,4 +60,6 @@ bool parse_mode(const char *name, const char *valid_modes, const char *value, ch
 bool parse_target_loudness(const char *value, double &target_loudness);
 bool parse_id3v2_version(const char *value, unsigned int &version);
 bool parse_max_peak_level(const char *value, double &peak);
+bool parse_midrange_freq(const char *value, double &freq);
+bool parse_midrange_blend(const char *value, double &blend);
 std::pair<bool, bool> parse_output_mode(const std::string_view arg);
