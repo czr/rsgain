@@ -57,7 +57,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // MP2 config
@@ -78,7 +82,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // MP3 config
@@ -99,7 +107,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // FLAC config
@@ -120,7 +132,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // OGG config
@@ -141,7 +157,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // OPUS config
@@ -162,7 +182,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // M4A config
@@ -183,7 +207,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // WMA config
@@ -204,7 +232,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // WAV config
@@ -225,7 +257,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // AIFF config
@@ -246,7 +282,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // Wavpack config
@@ -267,7 +307,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // APE config
@@ -288,7 +332,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // TAK config
@@ -309,7 +357,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
     
     // Musepack config
@@ -330,7 +382,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // DSF config
@@ -351,7 +407,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     }
 
     // Matroska config
@@ -373,7 +433,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     },
 
     // WebM config
@@ -394,7 +458,11 @@ static Config configs[] = {
         .opus_mode = 'd',
         .skip_mp4 = false,
         .preserve_mtimes = false,
-        .dual_mono = false
+        .dual_mono = false,
+        .midrange_filter = false,
+        .midrange_low = DEFAULT_MIDRANGE_LOW,
+        .midrange_high = DEFAULT_MIDRANGE_HIGH,
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND
     }
 #endif
 };
@@ -651,6 +719,42 @@ int global_handler([[maybe_unused]] void *user, const char *section, const char 
         else
             quit(EXIT_FAILURE);
     }
+    else if (MATCH(name, "MidrangeFilter")) {
+        bool midrange_filter;
+        if (convert_bool(value, midrange_filter)) {
+            for (Config &config : configs)
+                config.midrange_filter = midrange_filter;
+        }
+        else
+            quit(EXIT_FAILURE);
+    }
+    else if (MATCH(name, "MidrangeLow")) {
+        double midrange_low;
+        if (parse_midrange_freq(value, midrange_low)) {
+            for (Config &config : configs)
+                config.midrange_low = midrange_low;
+        }
+        else
+            quit(EXIT_FAILURE);
+    }
+    else if (MATCH(name, "MidrangeHigh")) {
+        double midrange_high;
+        if (parse_midrange_freq(value, midrange_high)) {
+            for (Config &config : configs)
+                config.midrange_high = midrange_high;
+        }
+        else
+            quit(EXIT_FAILURE);
+    }
+    else if (MATCH(name, "MidrangeBlend")) {
+        double midrange_blend;
+        if (parse_midrange_blend(value, midrange_blend)) {
+            for (Config &config : configs)
+                config.midrange_blend = midrange_blend;
+        }
+        else
+            quit(EXIT_FAILURE);
+    }
     return 0;
 }
 
@@ -687,6 +791,14 @@ int format_handler([[maybe_unused]] void *user, const char *section, const char 
         convert_bool(value, configs[static_cast<int>(file_type)].preserve_mtimes);
     else if (MATCH(name, "DualMono"))
         convert_bool(value, configs[static_cast<int>(file_type)].dual_mono);
+    else if (MATCH(name, "MidrangeFilter"))
+        convert_bool(value, configs[static_cast<int>(file_type)].midrange_filter);
+    else if (MATCH(name, "MidrangeLow"))
+        parse_midrange_freq(value, configs[static_cast<int>(file_type)].midrange_low);
+    else if (MATCH(name, "MidrangeHigh"))
+        parse_midrange_freq(value, configs[static_cast<int>(file_type)].midrange_high);
+    else if (MATCH(name, "MidrangeBlend"))
+        parse_midrange_blend(value, configs[static_cast<int>(file_type)].midrange_blend);
     return 0;
 }
 

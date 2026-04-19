@@ -54,6 +54,7 @@ extern "C" {
 #include "scan.hpp"
 #include "output.hpp"
 #include "tag.hpp"
+#include "filter.hpp"
 
 template <typename T>
 constexpr void output_fferror(int error, T&& msg)
@@ -217,6 +218,9 @@ ScanReturn ScanJob::Track::scan(const Config &config, std::mutex *m)
     bool output_progress = !quiet && !multithread && config.tag_mode != 'd';
     std::unique_lock<std::mutex> *lk = nullptr;
     ebur128_state *ebur128 = nullptr;
+    ebur128_state *ebur128_midrange = nullptr;
+    BiquadFilter highpass, lowpass;
+    std::vector<short> filtered_buf;
     int nb_channels;
 
 #if LIBAVCODEC_VERSION_MAJOR >= 59 
@@ -386,6 +390,23 @@ ScanReturn ScanJob::Track::scan(const Config &config, std::mutex *m)
     if (nb_channels == 1 && config.dual_mono)
         ebur128_set_channel(ebur128, 0, EBUR128_DUAL_MONO);
 
+    // Initialize midrange filter and libebur128
+    if (config.midrange_filter) {
+        ebur128_midrange = ebur128_init((unsigned int) nb_channels,
+            (size_t) codec_ctx->sample_rate,
+            EBUR128_MODE_I
+        );
+        if (!ebur128_midrange) {
+            if (!multithread)
+                output_error("Could not initialize midrange libebur128 scanner");
+            goto end;
+        }
+        if (nb_channels == 1 && config.dual_mono)
+            ebur128_set_channel(ebur128_midrange, 0, EBUR128_DUAL_MONO);
+        highpass = make_highpass(config.midrange_low, (double) codec_ctx->sample_rate, nb_channels);
+        lowpass = make_lowpass(config.midrange_high, (double) codec_ctx->sample_rate, nb_channels);
+    }
+
     // Allocate AVPacket structure
     packet = av_packet_alloc();
     if (!packet) {
@@ -428,6 +449,8 @@ ScanReturn ScanJob::Track::scan(const Config &config, std::mutex *m)
                     if (frame->ch_layout.nb_channels == nb_channels) {
 #endif
                         // Convert audio format with libswresample if necessary
+                        short *audio_data;
+                        bool needs_free = false;
                         if (swr) {
                             size_t out_size = static_cast<size_t>(
                                 av_samples_get_buffer_size(nullptr,
@@ -444,14 +467,26 @@ ScanReturn ScanJob::Track::scan(const Config &config, std::mutex *m)
                                 av_free(swr_out_data[0]);
                                 goto end;
                             }
-
-                            ebur128_add_frames_short(ebur128, (short*) swr_out_data[0], static_cast<size_t>(frame->nb_samples));
-                            av_free(swr_out_data[0]);
+                            audio_data = (short*) swr_out_data[0];
+                            needs_free = true;
+                        }
+                        else {
+                            audio_data = (short*) frame->data[0];
                         }
 
-                        // Audio is already in correct format
-                        else
-                            ebur128_add_frames_short(ebur128, (short*) frame->data[0], static_cast<size_t>(frame->nb_samples));
+                        ebur128_add_frames_short(ebur128, audio_data, static_cast<size_t>(frame->nb_samples));
+
+                        if (ebur128_midrange) {
+                            size_t total_samples = static_cast<size_t>(frame->nb_samples) * nb_channels;
+                            filtered_buf.resize(total_samples);
+                            std::memcpy(filtered_buf.data(), audio_data, total_samples * sizeof(short));
+                            highpass.process(filtered_buf.data(), static_cast<size_t>(frame->nb_samples), nb_channels);
+                            lowpass.process(filtered_buf.data(), static_cast<size_t>(frame->nb_samples), nb_channels);
+                            ebur128_add_frames_short(ebur128_midrange, filtered_buf.data(), static_cast<size_t>(frame->nb_samples));
+                        }
+
+                        if (needs_free)
+                            av_free(swr_out_data[0]);
 
                         if (output_progress) {
                             int pos = (int) std::round((double) frame->pts * time_base);
@@ -482,8 +517,10 @@ end:
         swr_free(&swr);
 
     // Use a smart pointer to manage the remaining lifetime of the ebur128 state
-    if (ebur128) 
+    if (ebur128)
         this->ebur128 = std::unique_ptr<ebur128_state, decltype(&free_ebur128)>(ebur128, free_ebur128);
+    if (ebur128_midrange)
+        this->ebur128_midrange = std::unique_ptr<ebur128_state, decltype(&free_ebur128)>(ebur128_midrange, free_ebur128);
     
     delete lk;
     return ret;
@@ -673,14 +710,24 @@ void ScanJob::Track::calculate_loudness(const Config &config)
             get_peak(ebur128.get(), channel++, &pk);
         track_peak = *std::max_element(peaks.begin(), peaks.end());
 
+        double effective_loudness = track_loudness;
+        if (ebur128_midrange) {
+            double midrange_loudness;
+            if (ebur128_loudness_global(ebur128_midrange.get(), &midrange_loudness) == EBUR128_SUCCESS
+                && midrange_loudness != -HUGE_VAL) {
+                effective_loudness = config.midrange_blend * (midrange_loudness + MIDRANGE_OFFSET)
+                                   + (1.0 - config.midrange_blend) * track_loudness;
+            }
+        }
+
         result.track_gain = (type == FileType::OPUS && config.opus_mode == 's' ? -23.0 : config.target_loudness)
-                             - track_loudness;
+                             - effective_loudness;
         result.track_peak = track_peak;
-        result.track_loudness = track_loudness;
+        result.track_loudness = effective_loudness;
     }
 }
 
-void ScanJob::calculate_album_loudness() 
+void ScanJob::calculate_album_loudness()
 {
     double album_loudness, album_peak;
     if (config.album_as_aes77) {
@@ -705,6 +752,23 @@ void ScanJob::calculate_album_loudness()
 
         if (ebur128_loudness_global_multiple(states.data(), states.size(), &album_loudness) != EBUR128_SUCCESS)
             album_loudness = config.target_loudness;
+
+        if (config.midrange_filter) {
+            std::vector<ebur128_state*> midrange_states;
+            midrange_states.reserve(tracks.size());
+            for (const Track &track : tracks)
+                if (track.ebur128_midrange && track.result.track_loudness != -HUGE_VAL)
+                    midrange_states.emplace_back(track.ebur128_midrange.get());
+
+            if (!midrange_states.empty()) {
+                double midrange_album_loudness;
+                if (ebur128_loudness_global_multiple(midrange_states.data(), midrange_states.size(), &midrange_album_loudness) == EBUR128_SUCCESS
+                    && midrange_album_loudness != -HUGE_VAL) {
+                    album_loudness = config.midrange_blend * (midrange_album_loudness + MIDRANGE_OFFSET)
+                                   + (1.0 - config.midrange_blend) * album_loudness;
+                }
+            }
+        }
 
         album_peak = std::max_element(tracks.begin(),
                          tracks.end(),
