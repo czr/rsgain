@@ -19,7 +19,7 @@
 #define DEFAULT_MIDRANGE_LOW 250.0
 #define DEFAULT_MIDRANGE_HIGH 4000.0
 #define DEFAULT_MIDRANGE_BLEND 0.5
-#define MIDRANGE_OFFSET 6.0
+#define DEFAULT_MIDRANGE_OFFSET 6.0
 
 enum class OutputType{
 	NONE,
@@ -49,6 +49,7 @@ struct Config {
 	double midrange_low;
 	double midrange_high;
 	double midrange_blend;
+	double midrange_offset;
 };
 
 
@@ -63,4 +64,5 @@ bool parse_id3v2_version(const char *value, unsigned int &version);
 bool parse_max_peak_level(const char *value, double &peak);
 bool parse_midrange_freq(const char *value, double &freq);
 bool parse_midrange_blend(const char *value, double &blend);
+bool parse_midrange_offset(const char *value, double &offset);
 std::pair<bool, bool> parse_output_mode(const std::string_view arg);
