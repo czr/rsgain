@@ -715,7 +715,7 @@ void ScanJob::Track::calculate_loudness(const Config &config)
             double midrange_loudness;
             if (ebur128_loudness_global(ebur128_midrange.get(), &midrange_loudness) == EBUR128_SUCCESS
                 && midrange_loudness != -HUGE_VAL) {
-                effective_loudness = config.midrange_blend * (midrange_loudness + MIDRANGE_OFFSET)
+                effective_loudness = config.midrange_blend * (midrange_loudness + config.midrange_offset)
                                    + (1.0 - config.midrange_blend) * track_loudness;
             }
         }
@@ -764,7 +764,7 @@ void ScanJob::calculate_album_loudness()
                 double midrange_album_loudness;
                 if (ebur128_loudness_global_multiple(midrange_states.data(), midrange_states.size(), &midrange_album_loudness) == EBUR128_SUCCESS
                     && midrange_album_loudness != -HUGE_VAL) {
-                    album_loudness = config.midrange_blend * (midrange_album_loudness + MIDRANGE_OFFSET)
+                    album_loudness = config.midrange_blend * (midrange_album_loudness + config.midrange_offset)
                                    + (1.0 - config.midrange_blend) * album_loudness;
                 }
             }

@@ -183,6 +183,18 @@ bool parse_midrange_blend(const char *value, double &blend)
     return true;
 }
 
+bool parse_midrange_offset(const char *value, double &offset)
+{
+    char *rest = nullptr;
+    double o = strtod(value, &rest);
+    if (rest == value || !std::isfinite(o)) {
+        output_error("Invalid midrange offset '{}'", value);
+        return false;
+    }
+    offset = o;
+    return true;
+}
+
 std::pair<bool, bool> parse_output_mode(const std::string_view arg)
 {
     std::pair<bool, bool> ret(false, false);
@@ -206,7 +218,7 @@ static void custom_mode(int argc, char *argv[])
     unsigned int nb_files   = 0;
     opterr = 0;
 
-    enum { OPT_MIDRANGE_LOW = 256, OPT_MIDRANGE_HIGH, OPT_MIDRANGE_BLEND };
+    enum { OPT_MIDRANGE_LOW = 256, OPT_MIDRANGE_HIGH, OPT_MIDRANGE_BLEND, OPT_MIDRANGE_OFFSET };
     const char *short_opts = "+aec:m:tdl:O::qps:LSI:o:Mh?";
     static struct option long_opts[] = {
         { "album",           no_argument,       nullptr, 'a' },
@@ -233,6 +245,7 @@ static void custom_mode(int argc, char *argv[])
         { "midrange-low",    required_argument, nullptr, OPT_MIDRANGE_LOW },
         { "midrange-high",   required_argument, nullptr, OPT_MIDRANGE_HIGH },
         { "midrange-blend",  required_argument, nullptr, OPT_MIDRANGE_BLEND },
+        { "midrange-offset", required_argument, nullptr, OPT_MIDRANGE_OFFSET },
 
         { "help",            no_argument,       nullptr, 'h' },
         { 0, 0, 0, 0 }
@@ -259,7 +272,8 @@ static void custom_mode(int argc, char *argv[])
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     };
 
     while ((rc = getopt_long(argc, argv, short_opts, long_opts, &i)) != -1) {
@@ -358,6 +372,11 @@ static void custom_mode(int argc, char *argv[])
 
             case OPT_MIDRANGE_BLEND:
                 if (!parse_midrange_blend(optarg, config.midrange_blend))
+                    quit(EXIT_FAILURE);
+                break;
+
+            case OPT_MIDRANGE_OFFSET:
+                if (!parse_midrange_offset(optarg, config.midrange_offset))
                     quit(EXIT_FAILURE);
                 break;
 
@@ -543,6 +562,7 @@ static inline void help_custom() {
     CMD_HELP("--midrange-low=n", "",   "Set low cutoff for midrange filter in Hz (default: 250)");
     CMD_HELP("--midrange-high=n", "",  "Set high cutoff for midrange filter in Hz (default: 4000)");
     CMD_HELP("--midrange-blend=n", "", "Blend between midrange and full-spectrum (0.0-1.0, default: 0.5)");
+    CMD_HELP("--midrange-offset=n", "", "Calibration offset in dB for midrange loudness (default: 6.0)");
 
     rsgain::print("\n");
 

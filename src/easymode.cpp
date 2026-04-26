@@ -61,7 +61,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // MP2 config
@@ -86,7 +87,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // MP3 config
@@ -111,7 +113,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // FLAC config
@@ -136,7 +139,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // OGG config
@@ -161,7 +165,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // OPUS config
@@ -186,7 +191,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // M4A config
@@ -211,7 +217,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // WMA config
@@ -236,7 +243,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // WAV config
@@ -261,7 +269,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // AIFF config
@@ -286,7 +295,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // Wavpack config
@@ -311,7 +321,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // APE config
@@ -336,7 +347,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // TAK config
@@ -361,7 +373,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
     
     // Musepack config
@@ -386,7 +399,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // DSF config
@@ -411,7 +425,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     }
 
     // Matroska config
@@ -437,7 +452,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     },
 
     // WebM config
@@ -462,7 +478,8 @@ static Config configs[] = {
         .midrange_filter = false,
         .midrange_low = DEFAULT_MIDRANGE_LOW,
         .midrange_high = DEFAULT_MIDRANGE_HIGH,
-        .midrange_blend = DEFAULT_MIDRANGE_BLEND
+        .midrange_blend = DEFAULT_MIDRANGE_BLEND,
+        .midrange_offset = DEFAULT_MIDRANGE_OFFSET
     }
 #endif
 };
@@ -755,6 +772,15 @@ int global_handler([[maybe_unused]] void *user, const char *section, const char 
         else
             quit(EXIT_FAILURE);
     }
+    else if (MATCH(name, "MidrangeOffset")) {
+        double midrange_offset;
+        if (parse_midrange_offset(value, midrange_offset)) {
+            for (Config &config : configs)
+                config.midrange_offset = midrange_offset;
+        }
+        else
+            quit(EXIT_FAILURE);
+    }
     return 0;
 }
 
@@ -799,6 +825,8 @@ int format_handler([[maybe_unused]] void *user, const char *section, const char 
         parse_midrange_freq(value, configs[static_cast<int>(file_type)].midrange_high);
     else if (MATCH(name, "MidrangeBlend"))
         parse_midrange_blend(value, configs[static_cast<int>(file_type)].midrange_blend);
+    else if (MATCH(name, "MidrangeOffset"))
+        parse_midrange_offset(value, configs[static_cast<int>(file_type)].midrange_offset);
     return 0;
 }
 
